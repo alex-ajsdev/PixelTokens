@@ -1,0 +1,49 @@
+plugins {
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+}
+
+forgeVersion = "1.16.5"
+
+minecraft {
+    mappings channel: 'official', version: '1.16.5'
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+repositories {
+    maven {
+        name = 'spongepowered-repo'
+        url = 'https://repo.spongepowered.org/maven'
+    }
+
+    maven { url 'https://jitpack.io' }
+
+    ivy {
+        setUrl('https://download.nodecdn.net/containers/reforged/server/release')
+        metadataSources {
+            artifact()
+        }
+        patternLayout {
+            artifact('[revision]/[artifact].[ext]')
+        }
+    }
+    maven {
+        url "https://maven.envyware.co.uk/releases"
+    }
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.39'
+    implementation 'pixelmon:Pixelmon-1.16.5-9.1.7-server:9.1.7'
+}
+
+shadowJar {
+    finalizedBy('reobfJar')
+    configurations = [project.configurations.shadow]
+    setArchiveBaseName(rootProject.name + '-Forge.jar')
+    exclude "**/module-info.class"
+}
+
+jar.finalizedBy('shadowJar')
+build.finalizedBy('versionedRelease')
