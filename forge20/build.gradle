@@ -13,38 +13,52 @@ minecraft {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
-repositories {
-    maven {
-        name = 'spongepowered-repo'
-        url = 'https://repo.spongepowered.org/maven'
-    }
-
-    maven { url 'https://jitpack.io' }
-
-    ivy {
-        setUrl('https://download.nodecdn.net/containers/reforged/server/release')
-        metadataSources {
-            artifact()
-        }
-        patternLayout {
-            artifact('[revision]/[artifact].[ext]')
-        }
-    }
-    maven {
-        url "https://maven.envyware.co.uk/releases"
-    }
-}
+repositories {}
 
 dependencies {
     minecraft "net.minecraftforge:forge:1.20.1-47.1.44"
 
-    implementation 'pixelmon:Pixelmon-1.20.1-9.2.0-server:9.2.0'
+    implementation 'pixelmon:Pixelmon-1.20.1-9.2.2-server:9.2.2'
+
+    implementation group: 'org.spongepowered', name: 'configurate-yaml', version: '4.0.0'
+
+    shadow group: 'com.envyful.api', name: 'commons', version: '5.3.1'
+    shadow (group: 'com.envyful.api', name: 'forge20', version: '5.3.1') {
+        transitive = false;
+    }
 }
 
 shadowJar {
     configurations = [project.configurations.shadow]
     setArchiveClassifier('')
     setArchiveBaseName("${rootProject.name}-Forge")
+
+    relocate('org.spongepowered.configurate', 'net.ajsdev.shinytoken.shade.configurate')
+    relocate('org.yaml.snakeyaml', 'net.ajsdev.shinytoken.shade.snakeyaml')
+    relocate('io.leangen.geantyref', 'net.ajsdev.shinytoken.shade.geantyref')
+    relocate('com.google.gson', 'net.ajsdev.shinytoken.shade.gson')
+    relocate('com.zaxxer', 'net.ajsdev.shinytoken.shade.hikari')
+    relocate('org.slf4j', 'net.ajsdev.shinytoken.shade.slf4j')
+    relocate('com.envyful.api', 'net.ajsdev.shinytoken.shade.envy.api')
+    relocate('org.bstats', 'net.ajsdev.shinytoken.shade.bstats')
+    relocate('com.google.common', 'net.ajsdev.shinytoken.shade.guava')
+    relocate('org.apache.logging', 'net.ajsdev.shinytoken.shade.log4j')
+    relocate('io.netty', 'net.ajsdev.shinytoken.shade.netty')
+    relocate('io.lettuce', 'net.ajsdev.shinytoken.shade.lettuce')
+    relocate('com.cronutils', 'net.ajsdev.shinytoken.shade.cronutils')
+    relocate('com.cronutils', 'net.ajsdev.shinytoken.shade.cronutils')
+    relocate('com.sun.el', 'net.ajsdev.shinytoken.shade.sun.el')
+    relocate('javax', 'net.ajsdev.shinytoken.shade.javax')
+    relocate('javax', 'net.ajsdev.shinytoken.shade.javax')
+    relocate('org.reactivestreams', 'net.ajsdev.shinytoken.shade.reactivestreams')
+    relocate('reactor', 'net.ajsdev.shinytoken.shade.reactor')
+
+    exclude "**/module-info.class"
+    exclude "**/*.properties"
+    exclude "**/*.xml"
+    exclude "META-INF/versions/9/**"
+    exclude "META-INF/native-image/**"
+    exclude "META-INF/services/**"
 }
 
 jar.finalizedBy('shadowJar')

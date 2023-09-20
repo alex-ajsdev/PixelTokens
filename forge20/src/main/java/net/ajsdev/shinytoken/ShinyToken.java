@@ -1,4 +1,4 @@
-package net.ajsdev.examplemod;
+package net.ajsdev.shinytoken;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -8,15 +8,15 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 
-@Mod(ExampleMod.MOD_ID)
-public class ExampleMod {
+@Mod(ShinyToken.MOD_ID)
+public class ShinyToken {
 
-    protected static final String MOD_ID = "examplemod";
+    protected static final String MOD_ID = "shinytoken";
     protected static final String VERSION = "0.0.0";
 
-    private static ExampleMod instance;
+    private static ShinyToken instance;
 
-    public ExampleMod() {
+    public ShinyToken() {
         instance = this;
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -37,7 +37,7 @@ public class ExampleMod {
 
     }
 
-    public static ExampleMod getInstance() {
+    public static ShinyToken getInstance() {
         return instance;
     }
 }
