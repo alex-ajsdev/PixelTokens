@@ -8,15 +8,15 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 
-@Mod(ShinyToken.MOD_ID)
-public class ShinyToken {
+@Mod(PixelTokens.MOD_ID)
+public class PixelTokens {
 
-    protected static final String MOD_ID = "shinytoken";
+    protected static final String MOD_ID = "pixeltokens";
     protected static final String VERSION = "0.0.0";
 
-    private static ShinyToken instance;
+    private static PixelTokens instance;
 
-    public ShinyToken() {
+    public PixelTokens() {
         instance = this;
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -37,7 +37,7 @@ public class ShinyToken {
 
     }
 
-    public static ShinyToken getInstance() {
+    public static PixelTokens getInstance() {
         return instance;
     }
 }

@@ -1,12 +1,13 @@
 package net.ajsdev.shinytoken.util;
 
-import com.envyful.api.forge.player.ForgeEnvyPlayer;
-import net.ajsdev.shinytoken.ShinyToken;
+import net.ajsdev.shinytoken.PixelTokens;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.StringNBT;
+import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -23,15 +24,15 @@ public final class TokenUtils {
     private static final List<String> TOKEN_LORE = List.of(
             TextFormatting.GRAY + "Right click on a pokemon to use!"
     );
-    private static final String RECEIVED_MESSAGE = "[ShinyToken] You received %d shiny tokens!";
+    private static final String RECEIVED_MESSAGE = PixelTokens.MSG_PREFIX + "You received %d shiny tokens!";
     private static final boolean SHOULD_GLOW = true;
 
     /**
      * Gives a specified amount of Shiny Tokens to the player.
      */
-    public static void giveToken(ForgeEnvyPlayer player, int amount) {
-        player.getParent().addItem(createToken(amount));
-        player.message(String.format(RECEIVED_MESSAGE, amount));
+    public static void giveToken(ServerPlayerEntity player, int amount) {
+        player.addItem(createToken(amount));
+        player.sendMessage(new StringTextComponent(String.format(RECEIVED_MESSAGE, amount)), Util.NIL_UUID);
     }
 
     /**
@@ -42,7 +43,7 @@ public final class TokenUtils {
         CompoundNBT nbt = token.getOrCreateTag();
 
 
-        nbt.putInt(ShinyToken.NBT_TAG, 1); // Tag identifying the item as a shiny token
+        nbt.putInt(PixelTokens.NBT_TAG, 1); // Tag identifying the item as a shiny token
         addDisplayName(nbt);
         addLore(nbt);
         nbt.putString("tooltip", ""); // Hide Pixelmon tooltip

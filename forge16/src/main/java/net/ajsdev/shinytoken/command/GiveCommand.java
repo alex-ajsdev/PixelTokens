@@ -1,36 +1,60 @@
 package net.ajsdev.shinytoken.command;
 
-import com.envyful.api.command.annotate.Command;
-import com.envyful.api.command.annotate.executor.Argument;
-import com.envyful.api.command.annotate.executor.CommandProcessor;
-import com.envyful.api.command.annotate.executor.Completable;
-import com.envyful.api.command.annotate.executor.Sender;
-import com.envyful.api.command.annotate.permission.Permissible;
-import com.envyful.api.forge.chat.UtilChatColour;
-import com.envyful.api.forge.command.completion.player.PlayerTabCompleter;
-import com.envyful.api.forge.player.ForgeEnvyPlayer;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.ajsdev.shinytoken.PixelTokens;
 import net.ajsdev.shinytoken.util.TokenUtils;
-import net.minecraft.command.ICommandSource;
-import net.minecraft.util.Util;
+import net.ajsdev.simplecommands.Argument;
+import net.ajsdev.simplecommands.SimpleCommand;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.arguments.EntityArgument;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
-/**
- * Command for giving shiny tokens to a specific player.
- */
-@Command(
-        value = {
+import java.util.Collection;
+import java.util.List;
+
+public class GiveCommand extends SimpleCommand {
+
+    @Override
+    protected List<String> addAliases() {
+        return List.of(
                 "give",
                 "g"
-        }
-)
-@Permissible("net.ajsdev.shinytoken.command.give")
-public final class GiveCommand {
-        private static final String GIVE_MESSAGE = "[ShinyToken] You gave %s %d shiny tokens.";
-        @CommandProcessor
-        public void onCommand(@Sender ICommandSource sender,
-                              @Completable(PlayerTabCompleter.class) @Argument(tabComplete = true) ForgeEnvyPlayer target,
-                              @Argument(defaultValue = "1") int amount) {
+        );
+    }
 
-                sender.sendMessage(UtilChatColour.colour(String.format(GIVE_MESSAGE, target.getName(), amount)), Util.NIL_UUID);
-                TokenUtils.giveToken(target, amount);
+    @Override
+    protected List<Argument> addArguments() {
+        return List.of(
+                new Argument("targets", EntityArgument.players()),
+                new Argument("amount", IntegerArgumentType.integer(1, 64))
+        );
+    }
+
+    @Override
+    protected List<SimpleCommand> addSubCommands() {
+        return null;
+    }
+
+    @Override
+    protected int addPermissionLevel() {
+        return 2;
+    }
+
+    @Override
+    protected int execute(CommandContext<CommandSource> context) throws CommandSyntaxException {
+
+        Collection<ServerPlayerEntity> players = EntityArgument.getPlayers(context, "targets");
+        int amount = IntegerArgumentType.getInteger(context, "amount");
+        for(ServerPlayerEntity player : players) {
+            TokenUtils.giveToken(player, amount);
         }
+        String msg = PixelTokens.MSG_PREFIX + "You gave %d shiny tokens to your target.";
+        ITextComponent message = new StringTextComponent(String.format(msg, amount));
+        context.getSource().sendSuccess(message, false);
+        return 1;
+    }
 }

@@ -2,7 +2,7 @@ package net.ajsdev.shinytoken.listener;
 
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.entities.pixelmon.PixelmonEntity;
-import net.ajsdev.shinytoken.ShinyToken;
+import net.ajsdev.shinytoken.PixelTokens;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -17,8 +17,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
  */
 public final class TokenInteractListener {
 
-    private static final String NON_OWNER_MESSAGE = "[ShinyToken] You don't own this pokemon!";
-    private static final String ALREADY_SHINY_MESSAGE = "[ShinyToken] This pokemon is already shiny!";
+    private static final String NON_OWNER_MESSAGE = PixelTokens.MSG_PREFIX + "You don't own this pokemon!";
+    private static final String ALREADY_SHINY_MESSAGE = PixelTokens.MSG_PREFIX + "This pokemon is already shiny!";
 
 
     /**
@@ -39,7 +39,7 @@ public final class TokenInteractListener {
 
         // Check for empty hand or if the held item isn't a shiny token.
         if (itemStack.isEmpty()) return;
-        if (!itemStack.getOrCreateTag().contains(ShinyToken.NBT_TAG)) return;
+        if (!itemStack.getOrCreateTag().contains(PixelTokens.NBT_TAG)) return;
 
         // Ensure the right-clicked entity is a Pixelmon.
         if (!(target instanceof PixelmonEntity)) return;
@@ -60,7 +60,7 @@ public final class TokenInteractListener {
         // Convert the Pixelmon to shiny and reduce the token count.
         pokemon.setShiny(true);
         itemStack.shrink(1);
-        ShinyToken.getLogger().info(String.format("%s used a shiny token.", player.getDisplayName().getString()));
+        PixelTokens.getLogger().info(String.format("%s used a shiny token.", player.getDisplayName().getString()));
         endEvent(event, null);
     }
 

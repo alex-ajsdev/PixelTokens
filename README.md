@@ -1,2 +1,2 @@
-# ShinyToken
-Adds ShinyToken
+# Pixel Tokens
+Adds PixelTokens

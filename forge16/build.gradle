@@ -33,7 +33,7 @@ shadowJar {
     configurations = [project.configurations.shadow]
     setArchiveClassifier('')
     setArchiveBaseName("${rootProject.name}-Forge")
-
+    minimize()
     relocate('org.spongepowered.configurate', 'net.ajsdev.shinytoken.shade.configurate')
     relocate('org.yaml.snakeyaml', 'net.ajsdev.shinytoken.shade.snakeyaml')
     relocate('io.leangen.geantyref', 'net.ajsdev.shinytoken.shade.geantyref')

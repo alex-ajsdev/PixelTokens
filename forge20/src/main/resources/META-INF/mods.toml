@@ -1,25 +1,25 @@
 modLoader="javafml"
 loaderVersion="[36,)"
 license="MIT"
-issueTrackerURL="https://github.com/alex-ajsdev/ShinyToken/issues"
+issueTrackerURL="https://github.com/alex-ajsdev/PixelTokens/issues"
 
 [[mods]]
-modId="shinytoken"
+modId="pixeltokens"
 version="0.1.0"
-displayName="Shiny Token"
+displayName="Pixel Tokens"
 displayURL="https://github.com/alex-ajsdev"
 credits="https://github.com/alex-ajsdev"
 authors="https://github.com/alex-ajsdev"
-description="Adds ShinyToken"
+description="Adds PixelTokens"
 
-[[dependencies.shinytoken]]
+[[dependencies.pixeltokens]]
 modId="forge"
 mandatory=true
 versionRange="[47.1.28,)"
 ordering="NONE"
 side="BOTH"
 
-[[dependencies.shinytoken]]
+[[dependencies.pixeltokens]]
 modId="minecraft"
 mandatory=true
 versionRange="[1.20.1,1.21)"
